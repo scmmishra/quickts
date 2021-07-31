@@ -15,7 +15,7 @@
   },
   "keywords": [],
   "author": "Shivam Mishra",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/fs-extra": "^9.0.12",
     "@types/node": "^16.4.8",
