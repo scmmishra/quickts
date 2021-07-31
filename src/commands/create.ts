@@ -1,6 +1,5 @@
 import basePackage from '../constants/package'
 import { PackageJson } from 'type-fest'
-import execa from 'execa'
 import * as fs from 'fs-extra'
 
 import { bold, green } from 'kolorist'
@@ -12,7 +11,7 @@ import { OptionalFeatures } from '../constants/choices'
 import getLicense from '../utils/license'
 import ora from 'ora'
 import { installing } from '../utils/messages'
-import { getManager, installPackages } from '../constants/commands'
+import { installPackages } from '../constants/commands'
 
 export type ProjectOpts = {
   author: string
