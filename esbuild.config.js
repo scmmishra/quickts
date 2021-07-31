@@ -5,7 +5,6 @@ const { red, cyan, green, dim } = require("kolorist");
 const { nodeExternalsPlugin } = require("esbuild-node-externals");
 
 function logChange(metafile) {
-  console.log(metafile);
   console.log("Detected change in files: ", green(Object.keys(metafile.inputs).join(", ")));
   console.log("Generated output: ", green(Object.keys(metafile.outputs).join(", ")));
   console.log("");
