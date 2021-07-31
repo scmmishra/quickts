@@ -1,8 +1,8 @@
 /node_modules/
 /build/
 /lib/
+/temp/
 /dist/
-/docs/
 .idea/*
 
 .DS_Store
