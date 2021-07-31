@@ -18,8 +18,8 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "rootDir": "src",
     "outDir": "dist",
+    "resolveJsonModule": true,
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],
