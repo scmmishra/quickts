@@ -1,5 +1,6 @@
 import * as fs from 'fs-extra'
 import { prompt } from './prompts'
+import path from 'path'
 
 import { bold, red } from 'kolorist'
 
@@ -17,4 +18,12 @@ export async function ensureSafeProjectPath(currentPath: string, pkg: string): P
 
   // Yes, it's a recursion! Not my first rodeo
   return await ensureSafeProjectPath(currentPath, pkg)
+}
+
+export async function writePrettyJson(
+  projectPath: string,
+  fileName: string,
+  body: Record<string, unknown> | Record<string, unknown>[]
+): Promise<void> {
+  return fs.writeFile(path.resolve(projectPath, fileName), JSON.stringify(body, null, 2))
 }
