@@ -12,7 +12,6 @@ import { licenses, optionalFeatures } from './constants/choices'
 import { bold, dim, yellow } from 'kolorist'
 import { prompt, promptMultiSelect, promptSelect } from './utils/prompts'
 import fullname from 'fullname'
-import consola from 'consola'
 import create from './commands/create'
 
 const quickts = sade('quickts')
@@ -42,7 +41,7 @@ quickts
 
       await create({ pkg, projectPath, author, email, version, extraFeatures, license })
     } catch (e) {
-      consola.error(e)
+      console.error(e)
     }
   })
 
