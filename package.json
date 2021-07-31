@@ -1,8 +1,12 @@
 {
   "name": "quickts",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "An opinionated but faster modern alternative to tsdx and microbundle",
   "main": "src/main.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scmmishra/qucikts.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
