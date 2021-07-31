@@ -1,8 +1,8 @@
 const esbuild = require('esbuild')
 const { red, cyan, green, dim } = require('kolorist')
 
-// Automatically exclude all node_modules from the bundled version
-const { nodeExternalsPlugin } = require('esbuild-node-externals')
+// // Automatically exclude all node_modules from the bundled version
+// const { nodeExternalsPlugin } = require('esbuild-node-externals')
 
 function logChange(metafile) {
   console.log('Detected change in files: ', green(Object.keys(metafile.inputs).join(', ')))
@@ -34,7 +34,7 @@ esbuild
       }
     },
     platform: 'node',
-    target: 'node14',
-    plugins: [nodeExternalsPlugin()]
+    target: 'node14'
+    // plugins: [nodeExternalsPlugin()]
   })
   .catch(() => process.exit(1))
