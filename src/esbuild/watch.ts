@@ -1,16 +1,33 @@
-const esbuild = require("esbuild");
+import esbuild, { BuildFailure, BuildResult } from "esbuild";
+import { red, cyan, dim } from "kolorist";
+import { logChange } from "./utils";
 
-export function watch(entryPoints: string[], outFile: string) {
-  return esbuild.build({
+export default function watch(entryPoints: string[], outfile: string, forNode: boolean = false) {
+  const config: esbuild.BuildOptions = {
     entryPoints: [...entryPoints],
-    outfile: outFile,
+    outfile: outfile,
     bundle: true,
-    minify: false,
+    minify: true,
     watch: {
-      onRebuild(error: Error, result: unknown) {
-        if (error) console.error("watch build failed:", error);
-        else console.log("watch build succeeded:", result);
+      onRebuild(error: BuildFailure | null, result: BuildResult | null) {
+        if (error) {
+          console.error("There was an error rebuilding changes.");
+          if (error.stack) console.log(dim(error.stack));
+          else console.log(error);
+        } else if (result) {
+          const { metafile, errors, warnings } = result;
+
+          if (metafile) logChange(metafile);
+          if (errors.length) console.log(red("Erros: "), errors);
+          if (warnings.length) console.log(cyan("Warnings: "), warnings);
+        }
       },
     },
-  });
+  };
+
+  if (forNode) {
+    config.target = "node14";
+    config.platform = "node";
+  }
+  return esbuild.build(config);
 }

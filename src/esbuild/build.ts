@@ -1,10 +1,16 @@
-const esbuild = require("esbuild");
+import esbuild from "esbuild";
 
-export function build(entryPoints: string[], outFile: string) {
-  return esbuild.build({
+export default function build(entryPoints: string[], outfile: string, forNode: boolean = false) {
+  const config: esbuild.BuildOptions = {
     entryPoints: [...entryPoints],
-    outfile: outFile,
+    outfile: outfile,
     bundle: true,
     minify: true,
-  });
+  };
+
+  if (forNode) {
+    config.target = "node14";
+    config.platform = "node";
+  }
+  return esbuild.build(config);
 }
