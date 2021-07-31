@@ -43,14 +43,16 @@ export default async function create(opts: ProjectOpts) {
 
     // Fetch license from GitHub API and replace the year and name
     if (opts.license) {
-      const licenseBody = await getLicense(opts.license)
-      await writePretty(
-        projectPath,
-        'LICENSE',
-        licenseBody
-          .replace('[year]', `${new Date().getFullYear()}`)
-          .replace('[fullname]', opts.author)
-      )
+      try {
+        const licenseBody = await getLicense(opts.license)
+        await writePretty(
+          projectPath,
+          'LICENSE',
+          licenseBody
+            .replace('[year]', `${new Date().getFullYear()}`)
+            .replace('[fullname]', opts.author)
+        )
+      } catch {}
     }
 
     // Add package json
@@ -75,6 +77,7 @@ export default async function create(opts: ProjectOpts) {
       await deleteDir(projectPath, ['.github', 'workflow'])
     }
     bootSpinner.succeed(`Created Project ${bold(green(pkg))}`)
+    bootSpinner.stop()
   })
 }
 
