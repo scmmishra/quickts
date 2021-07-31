@@ -1,5 +1,6 @@
 import basePackage from '../constants/package'
 import { PackageJson } from 'type-fest'
+import execa from 'execa'
 import * as fs from 'fs-extra'
 
 import { bold, green } from 'kolorist'
@@ -10,6 +11,8 @@ import { deleteDir, deleteFile, writePretty } from '../utils/files'
 import { OptionalFeatures } from '../constants/choices'
 import getLicense from '../utils/license'
 import ora from 'ora'
+import { installing } from '../utils/messages'
+import { getManager, installPackages } from '../constants/commands'
 
 export type ProjectOpts = {
   author: string
@@ -78,6 +81,18 @@ export default async function create(opts: ProjectOpts) {
     }
     bootSpinner.succeed(`Created Project ${bold(green(pkg))}`)
     bootSpinner.stop()
+
+    const deps = getDependencies(opts)
+    const installSpinner = ora(installing(deps.sort())).start()
+
+    try {
+      await installPackages(deps)
+      installSpinner.succeed('Installed dependencies')
+    } catch (error) {
+      installSpinner.fail('Failed to install dependencies')
+      console.error(error)
+      process.exit(1)
+    }
   })
 }
 
@@ -115,4 +130,12 @@ export function composePrettier(): Record<string, unknown> {
     singleQuote: true,
     trailingComma: 'es5'
   }
+}
+
+export function getDependencies({ extraFeatures }: ProjectOpts): string[] {
+  const base = ['quickts', 'tslib', 'typescript', 'size-limit', '@size-limit/preset-small-lib']
+  if (extraFeatures.includes(OptionalFeatures.TYPE_DOC)) {
+    return [...base, 'typedoc']
+  }
+  return base
 }
