@@ -1,8 +1,15 @@
 import basePackage from '../constants/package'
 import { PackageJson } from 'type-fest'
 import * as fs from 'fs-extra'
+
+import { bold, green, yellow } from 'kolorist'
+
 import path from 'path'
-import { writePrettyJson } from '../utils/files'
+
+import { deleteDir, deleteFile, writePretty } from '../utils/files'
+import { OptionalFeatures } from '../constants/choices'
+import getLicense from '../utils/license'
+import ora from 'ora'
 
 export type ProjectOpts = {
   author: string
@@ -16,16 +23,58 @@ export type ProjectOpts = {
 
 export default async function create(opts: ProjectOpts) {
   const { pkg, projectPath } = opts
+  console.log('')
+  const bootSpinner = ora(`Initializing Project ${bold(green(pkg))}`)
 
   const packageJson = composePackageJson(opts)
   const sizeLimit = composeSizeLimit(pkg)
   const prettier = composePrettier()
 
   fs.ensureDir(projectPath).then(async () => {
+    bootSpinner.start()
     // Add config files
-    await writePrettyJson(projectPath, 'package.json', packageJson as Record<string, unknown>)
-    await writePrettyJson(projectPath, '.size-limit.json', sizeLimit as Record<string, unknown>[])
-    await writePrettyJson(projectPath, '.prettier.json', prettier)
+    await fs.copy(path.resolve(__dirname, `../templates`), projectPath, { overwrite: true })
+
+    // fix gitignore
+    await fs.move(
+      path.resolve(projectPath, './gitignore'),
+      path.resolve(projectPath, './.gitignore')
+    )
+
+    // Fetch license from GitHub API and replace the year and name
+    if (opts.license) {
+      const licenseBody = await getLicense(opts.license)
+      await writePretty(
+        projectPath,
+        'LICENSE',
+        licenseBody
+          .replace('[year]', `${new Date().getFullYear()}`)
+          .replace('[fullname]', opts.author)
+      )
+    }
+
+    // Add package json
+    await writePretty(projectPath, 'package.json', packageJson as Record<string, unknown>)
+
+    // Add size limit config
+    await writePretty(projectPath, '.size-limit.json', sizeLimit as Record<string, unknown>[])
+
+    // Add size prettier config
+    await writePretty(projectPath, '.prettier.json', prettier)
+
+    // enable or disbale deepsource
+    if (!opts.extraFeatures.includes(OptionalFeatures.DEEPSOURCE)) {
+      await deleteFile(projectPath, '.deepsource.toml')
+      await deleteFile(projectPath, ['.github', 'workflow', 'test-report.yml'])
+    } else {
+      await deleteFile(projectPath, ['.github', 'workflow', 'test.yml'])
+    }
+
+    // enable or disbale github actions
+    if (!opts.extraFeatures.includes(OptionalFeatures.GITHUB_ACTIONS)) {
+      await deleteDir(projectPath, ['.github', 'workflow'])
+    }
+    bootSpinner.succeed(`Created Project ${bold(green(pkg))}`)
   })
 }
 

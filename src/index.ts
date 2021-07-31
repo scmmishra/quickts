@@ -27,7 +27,6 @@ quickts
     console.log(bold(yellow(`⚡️ QuickTS`)))
     console.log('')
 
-    // const spinner = ora(`Creating ${bold(yellow(pkg))}`);
     try {
       const realPath = await fs.realpath(process.cwd())
       const projectPath = await ensureSafeProjectPath(realPath, pkg)

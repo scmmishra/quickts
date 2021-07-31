@@ -27,6 +27,6 @@ export const optionalFeatures: Choice[] = [
     title: 'Github Actions - CI',
     value: OptionalFeatures.GITHUB_ACTIONS,
     selected: true
-  },
-  { title: 'TypeDoc - API Documentation', value: OptionalFeatures.TYPE_DOC }
+  }
+  // { title: 'TypeDoc - API Documentation', value: OptionalFeatures.TYPE_DOC }
 ]
