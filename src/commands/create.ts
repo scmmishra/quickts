@@ -2,7 +2,7 @@ import basePackage from '../constants/package'
 import { PackageJson } from 'type-fest'
 import * as fs from 'fs-extra'
 
-import { bold, green, yellow } from 'kolorist'
+import { bold, green } from 'kolorist'
 
 import path from 'path'
 
