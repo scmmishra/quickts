@@ -11,16 +11,22 @@ export const licenses: Choice[] = [
   { value: '', title: 'Other' }
 ]
 
+export enum OptionalFeatures {
+  DEEPSOURCE = 'deepsource',
+  GITHUB_ACTIONS = 'github-actions',
+  TYPE_DOC = 'type-doc'
+}
+
 export const optionalFeatures: Choice[] = [
   {
     title: 'DeepSource - Code Quality',
-    value: 'deepsource',
+    value: OptionalFeatures.DEEPSOURCE,
     selected: true
   },
   {
     title: 'Github Actions - CI',
-    value: 'github-actions',
+    value: OptionalFeatures.GITHUB_ACTIONS,
     selected: true
   },
-  { title: 'TypeDoc - API Documentation', value: 'type-doc' }
+  { title: 'TypeDoc - API Documentation', value: OptionalFeatures.TYPE_DOC }
 ]
