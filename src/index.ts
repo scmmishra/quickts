@@ -3,11 +3,13 @@ import sade from 'sade'
 // import ora from 'ora'
 
 import { version } from '../package.json'
-import { bold, yellow } from 'kolorist'
+import { bold, dim, yellow } from 'kolorist'
 import * as fs from 'fs-extra'
 import { ensureSafeProjectPath } from './utils/files'
-import { prompt, promptMultiSelect, promptSelect } from './utils/prompts'
 import { licenses, optionalFeatures } from './constants/choices'
+
+import { prompt, promptMultiSelect, promptSelect } from './utils/prompts'
+import fullname from 'fullname'
 
 const quickts = sade('quickts')
 
@@ -26,8 +28,8 @@ quickts
       const realPath = await fs.realpath(process.cwd())
       let projectPath = await ensureSafeProjectPath(realPath, pkg)
 
-      const author = await prompt(`Who is the package author?`)
-      const email = await prompt(`What's your email? (This will be public)`)
+      const author = await prompt(`Who is the package author?`, await fullname())
+      const email = await prompt(`What's your email? ${dim('This will be public')}`)
       const version = await prompt(`What version is this package on?`, '1.0.0')
       const extraFeatures = await promptMultiSelect('Select optional features', optionalFeatures)
       const license = await promptSelect('Select a License', licenses)

@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "fs-extra": "^10.0.0",
+    "fullname": "^4.0.1",
     "ora": "^5.4.1",
     "prompts": "^2.4.1",
     "sade": "^1.7.4"
