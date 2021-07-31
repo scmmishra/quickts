@@ -8,7 +8,7 @@
     "url": "git+https://github.com/scmmishra/qucikts.git"
   },
   "bin": {
-    "quickts": "./dist/index.js"
+    "quickts": "./dist/src/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
