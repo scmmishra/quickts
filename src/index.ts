@@ -9,10 +9,12 @@ import { ensureSafeProjectPath } from './utils/files'
 import { licenses, optionalFeatures } from './constants/choices'
 
 // Terminal
-import { bold, dim, yellow } from 'kolorist'
+import { bold, dim, yellow, green } from 'kolorist'
 import { prompt, promptMultiSelect, promptSelect } from './utils/prompts'
 import fullname from 'fullname'
 import create from './commands/create'
+import { BuildOpts } from './types'
+import watch from './esbuild/watch'
 
 const quickts = sade('quickts')
 
@@ -43,6 +45,28 @@ quickts
     } catch (e) {
       console.error(e)
     }
+  })
+
+quickts
+  .command('start')
+  .describe('Start watching for changes')
+  .option('--entry, -i', 'Entry module', 'src/index.ts')
+  .example('watch --entry src/index.ts')
+  .option('--target', 'Specify your target environment', 'browser')
+  .example('watch --target node')
+  .option('--name', 'Specify name exposed in UMD builds')
+  .example('watch --name AwesomePizzaBand')
+  .option('--format', 'Specify module format(s)', 'cjs,esm')
+  .example('watch --format cjs,esm')
+  .action(async (watchOpts: BuildOpts) => {
+    if (!watchOpts.entry) {
+      watchOpts.entry = ['src/index.ts']
+    } else if (typeof watchOpts.entry === 'string') {
+      watchOpts.entry = [watchOpts.entry]
+    }
+    console.log(bold('Starting esbuild in watch mode'))
+    console.log(dim(`Watching this project for changes`))
+    watch(watchOpts.entry, 'dist/index.js', watchOpts.target === 'node')
   })
 
 quickts.parse(process.argv)

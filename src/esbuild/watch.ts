@@ -7,7 +7,8 @@ export default function watch(entryPoints: string[], outfile: string, forNode: b
     entryPoints: [...entryPoints],
     outfile: outfile,
     bundle: true,
-    minify: true,
+    minify: false,
+    metafile: true,
     watch: {
       onRebuild(error: BuildFailure | null, result: BuildResult | null) {
         if (error) {
