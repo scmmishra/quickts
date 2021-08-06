@@ -1,4 +1,4 @@
-export const greet = () => {
+export const greet = (): string  => {
   if ('development' === process.env.NODE_ENV) {
     console.log('Hey, this is dev only output')
   }

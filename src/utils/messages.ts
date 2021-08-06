@@ -1,6 +1,6 @@
 import { cyan, bold } from 'kolorist'
 
-export const installing = function (deps: string[]) {
+export const installing = function (deps: string[]): string  {
   const packageList = deps
     .map(function (pkg) {
       return `    ${bold(cyan(pkg))}`
