@@ -2,7 +2,7 @@ import esbuild, { BuildFailure, BuildResult } from 'esbuild'
 import { red, cyan, dim } from 'kolorist'
 import { logChange } from './utils'
 
-export default function watch(entryPoints: string[], outfile: string, forNode: boolean = false) {
+export default function watch(entryPoints: string[], outfile: string, forNode = false) {
   const config: esbuild.BuildOptions = {
     entryPoints: [...entryPoints],
     outfile: outfile,

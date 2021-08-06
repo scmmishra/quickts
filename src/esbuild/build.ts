@@ -1,6 +1,6 @@
 import esbuild from 'esbuild'
 
-export default function build(entryPoints: string[], outfile: string, forNode: boolean = false) {
+export default function build(entryPoints: string[], outfile: string, forNode = false) {
   const config: esbuild.BuildOptions = {
     entryPoints: [...entryPoints],
     outfile: outfile,
