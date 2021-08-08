@@ -1,6 +1,6 @@
 {
   "name": "quickts",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "An opinionated but faster modern alternative to tsdx and microbundle",
   "main": "src/main.ts",
   "repository": {
