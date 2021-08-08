@@ -85,8 +85,7 @@ export default async function create(opts: ProjectOpts) {
     const installSpinner = ora(installing(deps.sort())).start()
 
     try {
-      process.chdir(projectPath)
-      await installPackages(deps)
+      await installPackages(deps, projectPath)
       installSpinner.succeed('Installed dependencies')
     } catch (error) {
       installSpinner.fail('Failed to install dependencies')

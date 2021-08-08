@@ -17,11 +17,11 @@ export async function getManager(): Promise<PackageManager> {
   return manager
 }
 
-export async function installPackages(packages: string[]): Promise<void> {
+export async function installPackages(packages: string[], dir: string): Promise<void> {
   const manager = await getManager()
 
   if (manager === 'yarn') {
-    await execa(manager, ['add', ...packages, '--dev'])
+    await execa(manager, ['add', ...packages, '--dev'], { cwd: dir })
   } else {
     await execa(manager, ['install', ...packages, '--save-dev'])
   }
