@@ -1,8 +1,7 @@
 <div align="center">
 
-# QuickTS
+  # QuickTS
 
   <p>Zero config, productivity focused CLI for typescript projects</p>
-  <br>
-  <a href="https://quickts.dev">quickts.dev</a>
+  <a style="margin-top:10px" href="https://quickts.dev">quickts.dev</a>
 </div>
