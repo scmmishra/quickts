@@ -1,16 +1,26 @@
 import execa from 'execa'
 
-export type PackageManager = 'yarn' | 'npm'
+export type PackageManager = 'pnpm' | 'yarn' | 'npm'
 
 let manager: PackageManager
+
+async function isManagerInstalled(manager: PackageManager): Promise<boolean> {
+  try {
+    await execa(manager, ['--version'])
+    return true
+  } catch {
+    return false
+  }
+}
 
 export async function getManager(): Promise<PackageManager> {
   if (manager) return manager
 
-  try {
-    await execa('yarnpkg', ['--version'])
+  if (await isManagerInstalled('pnpm')) {
+    manager = 'pnpm'
+  } else if (await isManagerInstalled('yarn')) {
     manager = 'yarn'
-  } catch (e) {
+  } else {
     manager = 'npm'
   }
 
@@ -19,10 +29,12 @@ export async function getManager(): Promise<PackageManager> {
 
 export async function installPackages(packages: string[], dir: string): Promise<void> {
   const manager = await getManager()
-
-  if (manager === 'yarn') {
+  
+  if (manager === 'pnpm') {
+    await execa(manager, ['install', ...packages, '--save-dev'], { cwd: dir })
+  } else if (manager === 'yarn') {
     await execa(manager, ['add', ...packages, '--dev'], { cwd: dir })
   } else {
-    await execa(manager, ['install', ...packages, '--save-dev'])
+    await execa(manager, ['install', ...packages, '--save-dev'], {cwd: dir})
   }
 }
