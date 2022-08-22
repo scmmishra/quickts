@@ -15,6 +15,7 @@ import fullname from 'fullname'
 import create from './commands/create'
 import { BuildOpts } from './types'
 import watch from './esbuild/watch'
+import getEmail from './utils/email'
 
 const quickts = sade('quickts')
 
@@ -35,7 +36,7 @@ quickts
       const author = await prompt(`Who is the package author?`, await fullname())
       const email = await prompt(
         `What's your email? ${dim('This will be public')}`,
-        'quickts@example.com'
+        await getEmail()
       )
       const version = await prompt(`What version is this package on?`, '1.0.0')
       const extraFeatures = await promptMultiSelect('Select optional features', optionalFeatures)
