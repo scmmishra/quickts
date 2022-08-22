@@ -15,6 +15,7 @@ import fullname from 'fullname'
 import create from './commands/create'
 import { BuildOpts } from './types'
 import watch from './esbuild/watch'
+import getEmail from './utils/email'
 
 const quickts = sade('quickts')
 
@@ -35,7 +36,7 @@ quickts
       const author = await prompt(`Who is the package author?`, await fullname())
       const email = await prompt(
         `What's your email? ${dim('This will be public')}`,
-        'quickts@example.com'
+        await getEmail()
       )
       const version = await prompt(`What version is this package on?`, '1.0.0')
       const extraFeatures = await promptMultiSelect('Select optional features', optionalFeatures)
@@ -67,6 +68,19 @@ quickts
     console.log(bold('Starting esbuild in watch mode'))
     console.log(dim(`Watching this project for changes`))
     watch(watchOpts.entry, 'dist/index.js', watchOpts.target === 'node')
+  })
+
+quickts
+  .command('test')
+  .describe('Run tests using Vitest')
+  .option('-v, --version', 'Display the current version of Vitest')
+  .option('-c, --config', 'Specify a custom config file')
+  .option('-u, --update', 'Update generated snapshots')
+  .option('-w --watch', 'Watch for changes and rerun tests', false)
+  .option('-t --testNamePattern', 'Specify a test name pattern')
+  .option('-c --coverage', 'Generate coverage reports', true)
+  .action((testOptions: unknown) => {
+    console.log(testOptions)
   })
 
 quickts.parse(process.argv)
