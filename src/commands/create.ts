@@ -133,8 +133,11 @@ export function composePrettier(): Record<string, unknown> {
 
 export function getDependencies({ extraFeatures }: ProjectOpts): string[] {
   const base = ['quickts', 'tslib', 'typescript', 'size-limit', '@size-limit/preset-small-lib']
+  if (extraFeatures.includes(OptionalFeatures.VITEST)) {
+    base.push('vitest')
+  }
   if (extraFeatures.includes(OptionalFeatures.TYPE_DOC)) {
-    return [...base, 'typedoc']
+    base.push('typedoc')
   }
   return base
 }

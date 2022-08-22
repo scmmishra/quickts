@@ -69,4 +69,17 @@ quickts
     watch(watchOpts.entry, 'dist/index.js', watchOpts.target === 'node')
   })
 
+quickts
+  .command('test')
+  .describe('Run tests using Vitest')
+  .option('-v, --version', 'Display the current version of Vitest')
+  .option('-c, --config', 'Specify a custom config file')
+  .option('-u, --update', 'Update generated snapshots')
+  .option('-w --watch', 'Watch for changes and rerun tests', false)
+  .option('-t --testNamePattern', 'Specify a test name pattern')
+  .option('-c --coverage', 'Generate coverage reports', true)
+  .action((testOptions: unknown) => {
+    console.log(testOptions)
+  })
+
 quickts.parse(process.argv)
